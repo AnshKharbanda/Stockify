@@ -52,7 +52,7 @@ def create_features(df: pd.DataFrame,window:int=7) -> pd.DataFrame:
     df["Open_Close_Diff"] = df["Close"] - df["Open"]
 
     # Volatility
-    df["Volatility_{window}"] = (
+    df[f"Volatility_{window}"] = (
         df["Daily_Return"]
         .rolling(window=window)
         .std()
@@ -67,13 +67,13 @@ def create_features(df: pd.DataFrame,window:int=7) -> pd.DataFrame:
     df["Close_Lag_3"] = df["Close"].shift(3)
 
     # Rolling Statistics
-    df["Rolling_Mean_{window}"] = (
+    df[f"Rolling_Mean_{window}"] = (
         df["Close"]
         .rolling(window=window)
         .mean()
     )
 
-    df["Rolling_STD_{window}"] = (
+    df[f"Rolling_STD_{window}"] = (
         df["Close"]
         .rolling(window=window)
         .std()
@@ -117,4 +117,10 @@ def prepare_data(df: pd.DataFrame, window: int = 7) -> pd.DataFrame:
 
     df.reset_index(drop=True, inplace=True)
 
+    return df
+
+def testdata(df:pd.DataFrame)->pd.DataFrame:
+    df=clean_data(df)
+    df=create_features(df)
+    df=prepare_data(df)
     return df

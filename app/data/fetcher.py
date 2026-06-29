@@ -118,3 +118,7 @@ def fetch_company_info(ticker: str) -> dict:
     }
     
 # print(fetch_company_info(stock[0]["ticker"]))
+def test():
+    stocks=search_stock("apple")
+    stock=stocks[0]["ticker"]
+    return fetch_stock_data(stock)
