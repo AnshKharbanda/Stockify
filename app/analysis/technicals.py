@@ -105,7 +105,7 @@ def _calculate_bollinger_bands(df: pd.DataFrame) -> pd.DataFrame:
 
 
 # Public Function
-def calculate_indicators(df: pd.DataFrame) -> pd.DataFrame:
+def calculate_technicals(df: pd.DataFrame) -> pd.DataFrame:
     if df.empty:
         raise ValueError("Input DataFrame is empty.")
 
