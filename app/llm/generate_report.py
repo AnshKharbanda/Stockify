@@ -1,15 +1,6 @@
-from openai import OpenAI
+from app.data.fetcher import fetch_company_info,fetch_stock_data
 
-from app.data.fetcher import (
-    fetch_company_info,
-    fetch_stock_data,
-)
-
-from app.data.preprocessing import (
-    clean_data,
-    create_features,
-    prepare_data,
-)
+from app.data.preprocessing import clean_data,create_features,prepare_data
 
 from app.analysis.technicals import calculate_technicals
 from app.models.anomaly import detect_anomalies
@@ -17,8 +8,20 @@ from app.models.prediction import predict_stock
 
 from app.llm.prompts import build_stock_prompt
 
+from openai import OpenAI
 
-client = OpenAI()
+import os
+
+from dotenv import load_dotenv
+
+load_dotenv()
+
+api_key = os.getenv("OPENAI_API_KEY")
+
+if not api_key:
+    raise RuntimeError("OPENAI_API_KEY not found in environment variables.")
+
+client = OpenAI(api_key=api_key)
 
 
 def generate_stock_report(ticker: str) -> str:
@@ -69,14 +72,19 @@ def generate_stock_report(ticker: str) -> str:
             input=prompt,
         )
 
+        if not response.output_text:
+            return (
+                "Unable to generate the report at the moment. "
+                "The language model returned an empty response."
+            )
+
+        return response.output_text
+
     except Exception as e:
-        raise RuntimeError(
-            "Failed to generate stock report."
-        ) from e
 
-    if not response.output_text:
-        raise RuntimeError(
-            "No response received from the language model."
+        print(f"LLM Error: {e}")
+
+        return (
+            "Unable to generate the AI report at the moment. "
+            "Please try again later."
         )
-
-    return response.output_text

@@ -21,17 +21,23 @@ def preprocess_stock_data(ticker: str):
     return df
 
 
-def dataframe_to_json(df: pd.DataFrame):
+# most important function
+def dataframe_to_json(df):
     df = df.copy()
 
-    # Convert datetime columns to string
-    for col in df.select_dtypes(include=["datetime64[ns]", "datetimetz"]).columns:
+    # Convert datetime columns
+    for col in df.select_dtypes(
+        include=["datetime64[ns]", "datetimetz"]
+    ):
         df[col] = df[col].astype(str)
 
-    # Replace inf/-inf with NaN
-    df.replace([np.inf, -np.inf], np.nan, inplace=True)
+    # Replace infinities
+    df = df.replace(
+        [np.inf, -np.inf],
+        np.nan,
+    )
 
-    # Convert all columns to object dtype
+    # Convert dataframe to object type
     df = df.astype(object)
 
     # Replace NaN with None
