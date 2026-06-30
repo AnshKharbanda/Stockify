@@ -1,6 +1,7 @@
 from fastapi import APIRouter, HTTPException
 
 from app.data.fetcher import search_stock,fetch_stock_data,fetch_company_info
+from app.utils.serialization import dataframe_to_json
 
 stock_router = APIRouter(prefix="/stocks",tags=["Stocks"])
 
@@ -21,10 +22,8 @@ def search_stock_endpoint(query: str):
 def get_stock_history(ticker: str):
     try:
         df = fetch_stock_data(ticker)
-        
-        # Serialize dataframe into Json
-        df["Date"] = df["Date"].astype(str)
-        return df.to_dict(orient="records")
+
+        return dataframe_to_json(df)
 
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
