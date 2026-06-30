@@ -59,7 +59,6 @@ def search_stock(query:str)->list[dict]:
 
     return results
 
-# print(search_stock("apple"))
 
 def fetch_stock_data(ticker: str,period: str = "5y",interval: str = "1d",) -> pd.DataFrame:
 
@@ -84,9 +83,6 @@ def fetch_stock_data(ticker: str,period: str = "5y",interval: str = "1d",) -> pd
     history.reset_index(inplace=True)
 
     return history
-
-# stock=search_stock("apple")
-# print(fetch_stock_data(stock[0]["ticker"]))
 
 def fetch_company_info(ticker: str) -> dict:
 
@@ -117,7 +113,6 @@ def fetch_company_info(ticker: str) -> dict:
         "summary": info.get("longBusinessSummary"),
     }
     
-# print(fetch_company_info(stock[0]["ticker"]))
 def test():
     stocks=search_stock("apple")
     stock=stocks[0]["ticker"]

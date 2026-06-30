@@ -57,9 +57,6 @@ def get_technical_analysis(ticker: str):
 
         technicals = calculate_technicals(df)
         
-        # print(technicals.isna().sum())
-        # print(np.isinf(technicals.select_dtypes(include="number")).sum())
-
         return dataframe_to_json(technicals)
 
     except ValueError as e:
